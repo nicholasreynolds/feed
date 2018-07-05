@@ -7,9 +7,13 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="http://fountainjs.io/assets/imgs/fountain.png" />
+    <script src="app/hello.js"
   </head>
 
-  <body ng-app="app">
+  <body ng-app="app" ng-controller="FeedController as feed">
+    <button ng-click="feed.loadResults()">Load Results</button>
+    <table id="results"></table>
+
     <ui-view></ui-view>
   </body>
 </html>
