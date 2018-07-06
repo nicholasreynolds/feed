@@ -39,6 +39,24 @@ angular
         $log.debug('Cannot make more than 1 call/second');
       }
     };
+  }])
+  .directive('ngCount', ['$interval', function ($interval) {
+    return {
+      link(scope, element) {
+        let timeoutId = 0;
+        let time = 0;
+
+        element.on('$destroy', () => {
+          $interval.cancel(timeoutId);
+        });
+
+        timeoutId = $interval(() => {
+          time++;
+          element.text(time);
+          scope.$apply();
+        }, 1000);
+      }
+    };
   }]);
 
 // transforms an openweather object to an aggie feed activity
@@ -61,7 +79,7 @@ const toActivity = function (weatherObj, $filter) {
         ucdSrcId: 'content identifier',
         objectType: 'notification',
         content: '' + weatherObj.data.name + '  ' +
-                  String($filter('number')(weatherObj.data.main.temp - 273.15, 2)) + ' C  ' +
+                  String($filter('number')(weatherObj.data.main.temp - 273.15, 2)) + 'C  ' +
                   weatherObj.data.weather[0].main,
         ucdEdusModel: {}
       },

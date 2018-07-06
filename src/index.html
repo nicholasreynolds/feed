@@ -15,7 +15,7 @@
     <button ng-click="feed.loadResults()">Load Results</button>
     <table id="results">
       <tbody>
-        <tr ng-repeat="i in feed.entries | orderBy:'-'"><td>{{i.activity.object.content}}</td></tr>
+      <tr ng-repeat="i in feed.entries | orderBy:'-'"><td>{{i.activity.object.content}} <span ng-count></span></td></tr>
       </tbody>
     </table>
 
