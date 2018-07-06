@@ -10,13 +10,23 @@
   </head>
 
   <body ng-app="app" ng-controller="FeedController as feed">
+    <md-card id="usage">
+      <md-card-content layout="column">
+        <h3>Usage</h3>
+        <p>
+          This application gets its data from the free tier of the Openweather API. This tier allows approximately
+          1 call/second. If a card does not display when 'Load' is clicked, this means you have exceeded the call capacity
+          momentarily. Wait another second before loading the next result.
+        </p>
+      </md-card-content>
+    </md-card>
     <md-button class="md-accent md-raised" ng-click="feed.loadResults()">Load</md-button>
     <div id="results">
       <md-card ng-repeat="i in feed.entries | orderBy:'-'">
         <md-card-content>
           <h2 layout="column">
             <span>City: {{i.activity.object.content.data.name}}</span>
-            <span>Temperature: {{i.activity.object.content.data.main.temp - 273.15 | number:2}}C</span>
+            <span>Temperature: {{i.activity.object.content.data.main.temp - 273.15 | number:0}}C</span>
             <span>Weather: {{i.activity.object.content.data.weather[0].main}}</span>
           </h2>
           <span ng-count>0</span>
