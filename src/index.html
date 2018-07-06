@@ -14,8 +14,8 @@
   <body ng-app="app" ng-controller="FeedController as feed">
     <button ng-click="feed.loadResults()">Load Results</button>
     <table id="results">
-      <tbody ng-repeat="i in feed.entries | orderBy:'-'">
-        <tr><td>{{i.data.name}}</td><td>{{i.data.main.temp - 273.15 | number:2}} C</td><td>{{i.data.weather[0].main}}</td></tr>
+      <tbody>
+        <tr ng-repeat="i in feed.entries | orderBy:'-'"><td>{{i.activity.object.content}}</td></tr>
       </tbody>
     </table>
 

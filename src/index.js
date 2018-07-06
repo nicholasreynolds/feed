@@ -18,7 +18,7 @@ angular
       }
     };
   }])
-  .controller('FeedController', ['$log', 'appSharedService', function ($log, appSharedService) {
+  .controller('FeedController', ['$log', '$filter', 'appSharedService', function ($log, $filter, appSharedService) {
     const vm = this;
     vm.cities = appSharedService.res('city.list.json').query(); // list of cities available for openweathermap api
     vm.currCityIndex = 0; // the current index of json object in cities list
@@ -32,7 +32,7 @@ angular
           .get('https://api.openweathermap.org/data/2.5/weather?id=' + vm.cities[vm.currCityIndex].id + '&APPID=' + vm.apiKey)
           .then(data => {
             vm.lastCall = new Date().getSeconds();
-            vm.entries.push(data); // entries list populates index.html table
+            vm.entries.push(toActivity(data, $filter)); // entries list populates index.html table
             vm.currCityIndex++;
           });
       } else {
@@ -40,3 +40,41 @@ angular
       }
     };
   }]);
+
+// transforms an openweather object to an aggie feed activity
+const toActivity = function (weatherObj, $filter) {
+  return {
+    activity: {
+      icon: 'icon-globe',
+      actor: {
+        id: 'department identifier',
+        objectType: 'person',
+        displayName: 'IET',
+        author: {
+          id: 'nkreynolds',
+          displayName: 'Nicholas Reynolds'
+        }
+      },
+      verb: 'post',
+      title: weatherObj.data.name,
+      object: {
+        ucdSrcId: 'content identifier',
+        objectType: 'notification',
+        content: '' + weatherObj.data.name + '  ' +
+                  String($filter('number')(weatherObj.data.main.temp - 273.15, 2)) + ' C  ' +
+                  weatherObj.data.weather[0].main,
+        ucdEdusModel: {}
+      },
+      to: [
+        {
+          id: 'public',
+          g: true,
+          i: false
+        }
+      ],
+      ucdEdusMeta: {
+        labels: ['~student-life']
+      }
+    }
+  };
+};
