@@ -3,7 +3,7 @@ import angular from 'angular';
 import './index.less';
 
 angular
-  .module('app', ['ngResource'])
+  .module('app', ['ngResource', 'ngMaterial'])
   .factory('appSharedService', ['$http', '$q', '$resource', function ($http, $q, $resource) {
     return {
       get(url) {
@@ -18,7 +18,7 @@ angular
       }
     };
   }])
-  .controller('FeedController', ['$log', '$filter', 'appSharedService', function ($log, $filter, appSharedService) {
+  .controller('FeedController', ['$log', 'appSharedService', function ($log, appSharedService) {
     const vm = this;
     vm.cities = appSharedService.res('city.list.json').query(); // list of cities available for openweathermap api
     vm.currCityIndex = 0; // the current index of json object in cities list
@@ -32,7 +32,7 @@ angular
           .get('https://api.openweathermap.org/data/2.5/weather?id=' + vm.cities[vm.currCityIndex].id + '&APPID=' + vm.apiKey)
           .then(data => {
             vm.lastCall = new Date().getSeconds();
-            vm.entries.push(toActivity(data, $filter)); // entries list populates index.html table
+            vm.entries.push(toActivity(data)); // entries list populates index.html table
             vm.currCityIndex++;
           });
       } else {
@@ -60,7 +60,7 @@ angular
   }]);
 
 // transforms an openweather object to an aggie feed activity
-const toActivity = function (weatherObj, $filter) {
+const toActivity = function (weatherObj) {
   return {
     activity: {
       icon: 'icon-globe',
@@ -78,9 +78,7 @@ const toActivity = function (weatherObj, $filter) {
       object: {
         ucdSrcId: 'content identifier',
         objectType: 'notification',
-        content: '' + weatherObj.data.name + '  ' +
-                  String($filter('number')(weatherObj.data.main.temp - 273.15, 2)) + 'C  ' +
-                  weatherObj.data.weather[0].main,
+        content: weatherObj, // Easier to format in desired manner if just pass obj
         ucdEdusModel: {}
       },
       to: [

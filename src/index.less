@@ -1,12 +1,25 @@
 body {
   background-color: lightgrey;
-}
+  text-align: center;
 
-#results {
-  padding: 1em;
+  #results {
+    padding: 1em;
 
-  tbody tr {
-    background-color: white;
-    margin: 2em 0;
+    md-card {
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      width: 25%;
+      text-align: center;
+
+      md-card-content span[ng-count]{
+        position: absolute;
+        text-align: unset;
+        right: .25em;
+        top: .25em;
+        z-index: 1000;
+        color: darkgray;
+      }
+    }
   }
 }
