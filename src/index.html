@@ -7,12 +7,18 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="http://fountainjs.io/assets/imgs/fountain.png" />
-    <script src="app/hello.js"
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-resource.min.js"></script>
+    <script src="index.js"></script>
   </head>
 
   <body ng-app="app" ng-controller="FeedController as feed">
     <button ng-click="feed.loadResults()">Load Results</button>
-    <table id="results"></table>
+    <table id="results">
+      <tbody ng-repeat="i in feed.entries">
+        <tr><td>{{i.data.name}}</td><td>{{i.data.main.temp - 273.15 | number:2}} C</td><td>{{i.data.weather[0].main}}</td></tr>
+      </tbody>
+    </table>
 
     <ui-view></ui-view>
   </body>
